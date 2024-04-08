@@ -40,43 +40,43 @@ public class index implements Serializable{
         blocks.set(index, null);
     }
 
-    public static List<String> searchBlocks(List<Integer> blockList, List<Integer> samplesIdxList, String querykmer){
-        List<String> resultDataset=new ArrayList<>();
-        int datasetnums=samplesIdxList.size();
-        ArrayList<Boolean> result = new ArrayList<>();
-        for(int global_block_idx:blockList){
-            System.out.println("查询块"+global_block_idx);
-            Block queryBlock=index.getBlock(global_block_idx);
-            if(queryBlock.getUseRowStorage()){
-                System.out.println(global_block_idx+"查询的时候进行了从行存储到列存储的转换");
-                queryBlock.convertToColumnStorage();
-            }
-            ArrayList<Boolean> cur_result=queryBlock.queryExistence(querykmer);
-//            System.out.println("拼接结果");
-            result.addAll(cur_result);
-//            System.out.println(result);
-        }
-        // 输出 BitSet 的内容
-//        System.out.print("Result Bitarray content: ");
-//        int count = 0; // 计数器，用于限制输出的位数
-        for (int i = 0; i < datasetnums; i++) {
-            boolean bit = result.get(i); // 获取第i位的值
-//            System.out.print(bit ? "1" : "0"); // 输出该位的值（1或0）
-//            count++;
-            // 每输出8位后换行，以保持输出格式
-//            if (count % 8 == 0) {
-//                System.out.print(" "); // 输出空格分隔
+//    public static List<String> searchBlocks(List<Integer> blockList, List<Integer> samplesIdxList, String querykmer){
+//        List<String> resultDataset=new ArrayList<>();
+//        int datasetnums=samplesIdxList.size();
+//        ArrayList<Boolean> result = new ArrayList<>();
+//        for(int global_block_idx:blockList){
+//            System.out.println("查询块"+global_block_idx);
+//            Block queryBlock=index.getBlock(global_block_idx);
+//            if(queryBlock.getUseRowStorage()){
+//                System.out.println(global_block_idx+"查询的时候进行了从行存储到列存储的转换");
+//                queryBlock.convertToColumnStorage();
 //            }
-            if(bit){
-                String fileName = MetaData.getNameByIdx(samplesIdxList.get(i));
-                resultDataset.add(fileName);
-            }
-        }
-//        System.out.println(); // 输出换行符
-        return resultDataset;
-    }
+//            ArrayList<Boolean> cur_result=queryBlock.queryExistence(querykmer);
+////            System.out.println("拼接结果");
+//            result.addAll(cur_result);
+////            System.out.println(result);
+//        }
+//        // 输出 BitSet 的内容
+////        System.out.print("Result Bitarray content: ");
+////        int count = 0; // 计数器，用于限制输出的位数
+//        for (int i = 0; i < datasetnums; i++) {
+//            boolean bit = result.get(i); // 获取第i位的值
+////            System.out.print(bit ? "1" : "0"); // 输出该位的值（1或0）
+////            count++;
+//            // 每输出8位后换行，以保持输出格式
+////            if (count % 8 == 0) {
+////                System.out.print(" "); // 输出空格分隔
+////            }
+//            if(bit){
+//                String fileName = MetaData.getNameByIdx(samplesIdxList.get(i));
+//                resultDataset.add(fileName);
+//            }
+//        }
+////        System.out.println(); // 输出换行符
+//        return resultDataset;
+//    }
 
-    public static List<String> searchBlocks2(List<Integer> blockList, List<Integer> samplesIdxList, List<Long> rowIdxs){
+    public static List<String> searchBlocksAsRow(List<Integer> blockList, List<Integer> samplesIdxList, List<Long> rowIdxs){
         List<String> resultDataset=new ArrayList<>();
         int datasetnums=samplesIdxList.size();
         BitSet result=new BitSet();

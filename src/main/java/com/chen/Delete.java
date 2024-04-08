@@ -1,5 +1,8 @@
 package com.chen;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,18 +10,28 @@ public class Delete {
     public static void main(String[] args) {
         Build.buildIndexFromSER();
         MetaData.outputMetadata();
-        index.printIndex();
-//        Query.querykmer("ATTATCAAACTTTATATGATTCAGCAATAAA");
+//传递一个记录删除数据集名称的文件地址
+        deleteDatasets("D:\\SequenceSearch_2\\deleteDatasets.txt");
 
-        deleteDataset("GCF_000005845.2_ASM584v2_genomic.fna");
-//        deleteDataset("GCF_000006645.1_ASM664v1_genomic.fna");
 
-//
-//        Query.querykmer("GTTGTGGATAAAATATCGGCGAGTCGGTATA");
         MetaData.outputMetadata();
-        index.printIndex();
+
+        Query.queryFile("D:\\SequenceSearch_2\\query.txt");
     }
 
+    public static void deleteDatasets(String deleteFile){//deleteFile每行是要删除的数据集名
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(deleteFile));
+            String cur_dataset;
+            while ((cur_dataset = reader.readLine()) != null) {
+                // 处理每行中的文件路径
+                deleteDataset(cur_dataset);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static void deleteDataset(String filename){
         List<Integer> operateBlock=new ArrayList<>();//存储因删除操作进行了存储方式转换的块号，以便操作完转换回来
         if (MetaData.getName_to_idx().containsKey(filename)) {

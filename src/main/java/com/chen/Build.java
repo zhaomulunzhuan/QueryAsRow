@@ -67,7 +67,7 @@ public class Build {
         long buildend=System.nanoTime();
         long buildelapsedTime=buildend-buildstart;
         double elapsedTimeInseconds=(double) buildelapsedTime/1_000_000_000.0;
-        for(Block block:index.getBlockList()){
+        for(Block block:index.getBlockList()){//将block转换为按行存储
             block.serialize();
         }
         System.out.println("build时间"+elapsedTimeInseconds+"秒");

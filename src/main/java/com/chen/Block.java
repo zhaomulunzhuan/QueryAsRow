@@ -61,23 +61,24 @@ public class Block implements Serializable {
     public List<Boolean> getStatusList(){
         return statusList;
     }
-    public ArrayList<Boolean> queryExistence(String querykmer){//查询
-        //一个一个bf的查
-        ArrayList<Boolean> result = new ArrayList<>(Collections.nCopies(numsBloomFilter, false));
-        System.out.println(BloomFilterList);
-//        System.out.println(rowStorageBlock);
-        for(int i=0;i<numsBloomFilter;i++){
-            BloomFilter bf= BloomFilterList.get(i);
-            if (bf.test(querykmer)){
-                result.set(i,true);
-//                System.out.println(result);
-            }
-//            bf.printBitSet();
-        }
-        return result;
-    }
 
-    public BitSet queryKmer(List<Long> rowIdxs){
+//    public ArrayList<Boolean> queryExistence(String querykmer){//按列查询
+//        //一个一个bf的查
+//        ArrayList<Boolean> result = new ArrayList<>(Collections.nCopies(numsBloomFilter, false));
+//        System.out.println(BloomFilterList);
+////        System.out.println(rowStorageBlock);
+//        for(int i=0;i<numsBloomFilter;i++){
+//            BloomFilter bf= BloomFilterList.get(i);
+//            if (bf.test(querykmer)){
+//                result.set(i,true);
+////                System.out.println(result);
+//            }
+////            bf.printBitSet();
+//        }
+//        return result;
+//    }
+
+    public BitSet queryKmer(List<Long> rowIdxs){//按行查询
         BitSet result = new BitSet(numsBloomFilter);
         result.set(0, numsBloomFilter);//所有位设置为true
         for(long rowIndex:rowIdxs){
